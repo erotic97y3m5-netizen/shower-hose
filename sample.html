@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streamline Connections — 2026 Product Catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+  :root{
+  --white:#fff;
+  --bg:var(--white);
+  --surface:var(--white);
+    --text:#1a1a1e;
+    --text-secondary:#6b6b75;
+    --text-muted:#9d9da8;
+    --border:rgba(0,0,0,.06);
+    --gold:#c4974a;
+    --gold-dark:#a07a38;
+    --gold-light:rgba(196,151,74,.08);
+    --gold-glow:rgba(196,151,74,.15);
+    --shadow-sm:0 1px 3px rgba(0,0,0,.04);
+    --shadow-md:0 4px 16px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04);
+    --shadow-lg:0 8px 32px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04);
+    --radius:12px;
+    --radius-lg:16px;
+    --font-sans:'Inter',-apple-system,system-ui,sans-serif;
+    --font-serif:'Playfair Display',Georgia,serif;
+    --max-w:1100px
+  }
+  html{scroll-behavior:smooth}
+  body{
+    font-family:var(--font-sans);
+    background:var(--white);
+    color:var(--text);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden
+  }
+
+  /* ─── Nav ─── */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid transparent;
+    height:52px;
+    display:flex;align-items:center;justify-content:center;
+    padding:0 24px;
+    transition:border-color .3s, box-shadow .3s
+  }
+  nav.scrolled{border-color:var(--border);box-shadow:0 1px 8px rgba(0,0,0,.03)}
+  nav .inner{
+    max-width:var(--max-w);width:100%;
+    display:flex;align-items:center;justify-content:space-between
+  }
+  nav .logo{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--text);cursor:pointer;transition:opacity .2s}
+  nav .logo:hover{opacity:.6}
+  nav .logo em{font-style:normal;color:var(--gold)}
+  nav .nav-links{display:flex;gap:2px;align-items:center}
+  nav .nav-links a{
+    font-size:11.5px;font-weight:500;color:var(--text-secondary);
+    text-decoration:none;padding:5px 12px;border-radius:6px;transition:all .2s;
+    position:relative
+  }
+  nav .nav-links a:hover{color:var(--text);background:var(--gold-light)}
+  nav .nav-links a.active{color:var(--gold)}
+  nav .nav-links a.active::after{
+    content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);
+    width:16px;height:2px;background:var(--gold);border-radius:2px
+  }
+
+  /* ─── Hamburger ─── */
+  .hamburger{
+    display:none;flex-direction:column;gap:4px;cursor:pointer;
+    padding:6px;border:none;background:none;z-index:101;
+    align-items:center;justify-content:center
+  }
+  .hamburger span{
+    display:block;width:20px;height:2px;
+    background:var(--text);border-radius:2px;
+    transition:all .3s;transform-origin:center
+  }
+  .hamburger.active span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+  .hamburger.active span:nth-child(2){opacity:0}
+  .hamburger.active span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+
+  /* ─── Inner Tube Nav Button ─── */
+  .inner-tube-btn{
+    font-size:11.5px;font-weight:500;color:var(--text-secondary);
+    padding:5px 12px;border-radius:6px;cursor:pointer;
+    transition:all .2s;position:relative;
+    border:none;background:none;font-family:var(--font-sans);
+    display:flex;align-items:center;gap:6px
+  }
+  .inner-tube-btn:hover{color:var(--text);background:var(--gold-light)}
+  .inner-tube-btn .badge{
+    font-size:8px;background:var(--gold);color:#fff;
+    padding:1px 6px;border-radius:100px;
+    display:none;font-weight:600
+  }
+  .inner-tube-btn .badge.show{display:inline-block}
+  .inner-tube-btn.active{color:var(--gold)}
+
+  /* ─── Inner Tube Panel ─── */
+  .tube-panel{
+    position:fixed;top:52px;left:0;right:0;z-index:99;
+    background:rgba(255,255,255,.95);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border-bottom:1px solid var(--border);
+    box-shadow:var(--shadow-md);
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .45s cubic-bezier(.25,.1,.25,1);
+    padding:0 24px
+  }
+  .tube-panel.open{max-height:350px}
+  .tube-panel .inner{
+    max-width:var(--max-w);margin:0 auto;
+    padding:24px 0 20px
+  }
+  .tube-panel .tube-label{
+    font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--text-muted);margin-bottom:14px
+  }
+  .tube-grid{
+    display:grid;
+    grid-template-columns:repeat(4, auto);
+    justify-content:center;
+    gap:10px;
+    margin:0 auto
+  }
+  .tube-grid .tube-opt{
+    border:2px solid var(--border);border-radius:10px;
+    padding:10px 6px;text-align:center;cursor:pointer;
+    transition:all .25s
+  }
+  .tube-grid .tube-opt:hover{border-color:var(--gold);background:var(--gold-light);transform:translateY(-2px)}
+  .tube-grid .tube-opt.active{border-color:var(--gold);background:var(--gold-light);box-shadow:0 0 0 3px var(--gold-glow)}
+  .tube-grid .tube-opt img{max-width:100%;height:70px;object-fit:contain;margin-bottom:6px}
+  .tube-grid .tube-opt span{font-size:9px;font-weight:500;color:var(--text-secondary);display:block;line-height:1.3}
+
+  /* ─── COVER ─── */
+  .cover{
+    min-height:100vh;
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    background:linear-gradient(165deg,#0f0f12 0%,#1a1a20 40%,#1e1d22 70%,#141418 100%);
+    overflow:hidden;
+    padding:40px 24px;
+    margin-top:52px
+  }
+  .cover::before{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse 600px 400px at 20% 30%, rgba(196,151,74,.06) 0%, transparent 70%),
+      radial-gradient(ellipse 500px 500px at 80% 70%, rgba(196,151,74,.04) 0%, transparent 70%);
+    z-index:1
+  }
+  .cover-lines{position:absolute;inset:0;z-index:1;overflow:hidden;pointer-events:none}
+  .cover-lines span{
+    position:absolute;
+    background:rgba(196,151,74,.06);
+    height:1px;width:100%;
+    transform:scaleX(0);transform-origin:left;
+    animation:lineGrow 1.4s ease forwards
+  }
+  .cover-lines span:nth-child(1){top:15%;animation-delay:.1s}
+  .cover-lines span:nth-child(2){top:35%;animation-delay:.25s}
+  .cover-lines span:nth-child(3){top:55%;animation-delay:.4s}
+  .cover-lines span:nth-child(4){top:75%;animation-delay:.55s}
+  .cover-lines span:nth-child(5){top:92%;animation-delay:.7s}
+  @keyframes lineGrow{to{transform:scaleX(1)}}
+
+  .cover-deco{
+    position:absolute;right:-80px;top:50%;transform:translateY(-50%);
+    width:500px;height:500px;z-index:1;
+    border:1px solid rgba(196,151,74,.08);
+    border-radius:50%;
+    animation:pulseRing 6s ease-in-out infinite
+  }
+  .cover-deco::before{
+    content:'';position:absolute;
+    inset:40px;
+    border:1px solid rgba(196,151,74,.06);
+    border-radius:50%;
+    animation:pulseRing 6s ease-in-out infinite 1s
+  }
+  .cover-deco::after{
+    content:'';position:absolute;
+    inset:80px;
+    border:1px solid rgba(196,151,74,.04);
+    border-radius:50%;
+    animation:pulseRing 6s ease-in-out infinite 2s
+  }
+  @keyframes pulseRing{0%,100%{opacity:.6}50%{opacity:1}}
+
+  .cover-content{position:relative;z-index:2;width:100%;max-width:var(--max-w)}
+  .cover-top{
+    display:flex;justify-content:space-between;align-items:flex-start;
+    margin-bottom:100px;
+    opacity:0;transform:translateY(20px);
+    animation:fadeUp .8s ease .2s forwards
+  }
+  .cover-top .year{
+    font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--gold);padding:5px 14px;
+    border:1px solid rgba(196,151,74,.25);
+    border-radius:100px
+  }
+  .cover-top .tag{
+    font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;
+    color:rgba(255,255,255,.3)
+  }
+
+  .cover-main{max-width:700px}
+  .cover-main .pre-title{
+    font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:20px;
+    opacity:0;transform:translateY(15px);
+    animation:fadeUp .7s ease .4s forwards
+  }
+  .cover-main h1{
+    font-family:var(--font-serif);
+    font-size:64px;font-weight:600;line-height:1.05;
+    color:var(--white);
+    letter-spacing:-.02em;
+    margin-bottom:8px;
+    opacity:0;transform:translateY(20px);
+    animation:fadeUp .7s ease .5s forwards
+  }
+  .cover-main h1 .gold{color:var(--gold)}
+  .cover-main h2{
+    font-family:var(--font-serif);
+    font-size:64px;font-weight:600;line-height:1.05;
+    color:var(--white);
+    letter-spacing:-.02em;
+    margin-bottom:24px;
+    opacity:0;transform:translateY(20px);
+    animation:fadeUp .7s ease .6s forwards
+  }
+  .cover-main .subtitle{
+    font-size:16px;font-weight:300;color:rgba(255,255,255,.5);
+    max-width:480px;line-height:1.7;
+    letter-spacing:.02em;
+    margin-bottom:36px;
+    opacity:0;transform:translateY(15px);
+    animation:fadeUp .7s ease .7s forwards
+  }
+
+  .cover-cta{display:flex;gap:12px;opacity:0;transform:translateY(15px);animation:fadeUp .7s ease .9s forwards}
+  .cover-cta a{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:12px 28px;border-radius:100px;
+    font-size:13px;font-weight:500;text-decoration:none;transition:all .3s
+  }
+  .cover-cta a.primary{
+    background:var(--gold);color:#0f0f12
+  }
+  .cover-cta a.primary:hover{background:#d4a85a;transform:translateY(-1px);box-shadow:0 4px 20px rgba(196,151,74,.3)}
+  .cover-cta a.secondary{
+    border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.7)
+  }
+  .cover-cta a.secondary:hover{
+    border-color:var(--gold);color:var(--gold);background:rgba(196,151,74,.08)
+  }
+
+  .cover-footer{
+    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+    z-index:2;text-align:center;
+    opacity:0;animation:fadeIn 1s ease 1.2s forwards
+  }
+  .cover-footer p{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.15em;text-transform:uppercase}
+
+  @keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+  @keyframes fadeIn{to{opacity:1}}
+
+  /* ─── Section Common ─── */
+  section{padding:100px 24px;background:var(--white)}
+  .section-divider-wrap{background:var(--white);padding-bottom:1px}
+  .inner{max-width:var(--max-w);margin:0 auto}
+  .section-header{margin-bottom:56px;text-align:center}
+  .section-header .label{
+    font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:10px
+  }
+  .section-header h2{
+    font-size:32px;font-weight:600;letter-spacing:-.4px;line-height:1.15;
+    margin-bottom:10px;
+    font-family:var(--font-serif)
+  }
+  .section-header p{
+    font-size:14px;color:var(--text-secondary);max-width:480px;margin:0 auto
+  }
+
+  /* ─── Section Divider ─── */
+  .section-divider{
+    display:flex;align-items:center;justify-content:center;gap:16px;
+    padding:0 24px;position:relative;z-index:1
+  }
+  .section-divider .line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);max-width:200px}
+  .section-divider .dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+
+  /* ─── Product Cards ─── */
+  .products{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .card{
+    background:var(--white);
+    border:1px solid var(--border);
+    border-radius:var(--radius-lg);
+    overflow:hidden;
+    transition:all .45s cubic-bezier(.25,.1,.25,1);
+    cursor:pointer;
+    opacity:0;transform:translateY(30px);
+    box-shadow:var(--shadow-sm)
+  }
+  .card.visible{opacity:1;transform:translateY(0)}
+  .card:hover{
+    box-shadow:0 12px 40px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.04);
+    border-color:var(--gold);
+    transform:translateY(-4px)
+  }
+  .card:active{transform:translateY(-1px)}
+  .card-img{
+    background:var(--white);
+    padding:32px 28px;
+    display:flex;align-items:center;justify-content:center;
+    min-height:240px;
+    position:relative;
+    transition:background .3s
+  }
+  .card:hover .card-img{background:var(--white)}
+  .card-img::after{
+    content:'';position:absolute;bottom:0;left:10%;right:10%;
+    height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    opacity:0;transition:opacity .45s
+  }
+  .card:hover .card-img::after{opacity:.5}
+  .card-img img{max-width:100%;max-height:180px;object-fit:contain;transition:transform .5s cubic-bezier(.25,.1,.25,1)}
+  .card:hover .card-img img{transform:scale(1.06)}
+
+  .card-body{padding:22px 22px 26px}
+  .card-tag{
+    font-size:8.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:6px
+  }
+  .card-body h3{font-size:16px;font-weight:600;letter-spacing:-.15px;margin-bottom:2px}
+  .card-body h3 small{font-size:12.5px;font-weight:400;color:var(--text-muted)}
+  .card-desc{font-size:12px;color:var(--text-secondary);margin-bottom:14px;line-height:1.5}
+  .card-specs{display:grid;gap:4px;font-size:11px}
+  .card-specs .row{display:flex;gap:6px;padding:2px 0}
+  .card-specs .row .label{color:var(--text-muted);min-width:68px;flex-shrink:0}
+  .card-specs .row .value{color:var(--text);font-weight:500}
+
+  /* ─── Alt Section ─── */
+  .alt{}
+
+  /* ─── Footer ─── */
+  footer{
+    background:#0f0f12;
+    padding:56px 24px;text-align:center
+  }
+  footer .brand{
+    font-family:var(--font-serif);
+    font-size:18px;color:rgba(255,255,255,.6);margin-bottom:4px
+  }
+  footer .brand em{font-style:normal;color:var(--gold)}
+  footer p{font-size:11px;color:rgba(255,255,255,.2);letter-spacing:.05em}
+
+  /* ─── Responsive ─── */
+  @media(max-width:900px){
+    .cover-main h1,.cover-main h2{font-size:40px}
+    .cover-top{margin-bottom:60px}
+    .cover-deco{display:none}
+    .products{grid-template-columns:repeat(2,1fr)}
+    section{padding:60px 16px}
+    .tube-grid{grid-template-columns:repeat(3, auto);justify-content:center}
+    .tube-panel.open{max-height:500px}
+  }
+  @media(max-width:600px){
+    .hamburger{display:flex}
+    nav .nav-links{
+      display:none;position:fixed;top:52px;left:0;right:0;
+      background:rgba(255,255,255,.98);backdrop-filter:blur(20px);
+      -webkit-backdrop-filter:blur(20px);
+      padding:12px 16px 16px;
+      border-bottom:1px solid var(--border);box-shadow:var(--shadow-md);z-index:99;
+      flex-direction:column;gap:4px
+    }
+    nav .nav-links.open{display:flex}
+    nav .nav-links a,
+    nav .nav-links .inner-tube-btn{
+      padding:12px 16px;font-size:14px;width:100%;justify-content:center;
+      border-radius:8px;min-height:44px
+    }
+    nav .nav-links a.active::after{display:none}
+    .nav-links .inner-tube-btn .badge.show{display:inline-block}
+
+    /* ─── Cover ─── */
+    .cover{min-height:85vh;padding:20px 16px}
+    .cover-top{margin-bottom:32px;flex-direction:column;gap:10px}
+    .cover-main h1,.cover-main h2{font-size:28px}
+    .cover-main .subtitle{font-size:14px;max-width:100%;margin-bottom:28px}
+    .cover-cta{flex-direction:column;align-items:stretch}
+    .cover-cta a{padding:12px 20px;font-size:13px;width:100%;justify-content:center}
+    .cover-footer{bottom:16px}
+    .cover-deco{display:none}
+
+    /* ─── Sections ─── */
+    section{padding:36px 12px}
+    .section-header{margin-bottom:28px}
+    .section-header h2{font-size:22px}
+    .section-header p{font-size:13px}
+
+    /* ─── Products ─── */
+    .products{grid-template-columns:1fr;gap:14px}
+    .products[style*="repeat(4"]{grid-template-columns:1fr !important}
+    .card-img{min-height:160px;padding:20px 16px}
+    .card-img img{max-height:140px}
+    .card-body{padding:14px 14px 18px}
+    .card-body h3{font-size:15px}
+
+    /* ─── Cards: touch feedback ─── */
+    .card:hover{transform:none;box-shadow:var(--shadow-sm);border-color:var(--border)}
+    .card:hover .card-img img{transform:none}
+    .card:active{transform:scale(.98);box-shadow:var(--shadow-md);border-color:var(--gold)}
+
+    /* ─── Inner Tube Panel ─── */
+    .tube-grid{grid-template-columns:repeat(3,1fr);gap:6px}
+    .tube-panel.open{max-height:70vh;overflow-y:auto}
+    .tube-grid .tube-opt{padding:8px 4px}
+    .tube-grid .tube-opt img{height:50px}
+    .tube-grid .tube-opt span{font-size:8px}
+
+    /* ─── Modal ─── */
+    .modal-overlay{padding:12px}
+    .modal{border-radius:16px}
+    .modal-grid{grid-template-columns:1fr}
+    .modal-img{border-radius:16px 16px 0 0;padding:16px;min-height:180px}
+    .modal-img img{max-height:180px}
+    .modal-info{padding:20px 16px}
+    .modal-info h2{font-size:20px}
+    .modal-info h2 small{font-size:13px}
+    .modal-desc{font-size:12px}
+    .modal-specs{grid-template-columns:1fr}
+    .modal-specs .ms{padding:8px 10px}
+    .modal-colors{grid-template-columns:repeat(3,1fr);gap:6px}
+    .modal-colors .mc{padding:4px}
+    .modal-colors .mc img{height:36px}
+    .modal-colors .mc span{font-size:7px}
+    .modal-close{top:8px;right:8px;width:30px;height:30px;font-size:14px}
+    .modal-tube-badge{font-size:10px;padding:3px 10px}
+
+    /* ─── Footer ─── */
+    footer{padding:36px 16px}
+    footer .brand{font-size:15px}
+  }
+
+  @media(max-width:400px){
+    .cover-main h1,.cover-main h2{font-size:24px}
+    .tube-grid{grid-template-columns:repeat(2,1fr)}
+    .modal-colors{grid-template-columns:repeat(2,1fr)}
+  }
+
+  /* ─── Modal ─── */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(0,0,0,.5);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:none;
+    align-items:center;justify-content:center;
+    padding:24px;
+    opacity:0;
+    transition:opacity .35s ease
+  }
+  .modal-overlay.active{display:flex;opacity:1}
+  .modal{
+    background:var(--white);
+    border-radius:20px;
+    max-width:880px;width:100%;
+    max-height:90vh;
+    overflow-y:auto;
+    position:relative;
+    transform:scale(.9) translateY(30px);
+    transition:transform .4s cubic-bezier(.25,.1,.25,1),box-shadow .4s;
+    box-shadow:0 24px 80px rgba(0,0,0,.2)
+  }
+  .modal-overlay.active .modal{transform:scale(1) translateY(0)}
+  .modal-close{
+    position:absolute;top:16px;right:16px;z-index:10;
+    width:36px;height:36px;border-radius:50%;
+    border:none;background:var(--border);color:var(--text);
+    font-size:18px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:all .2s
+  }
+  .modal-close:hover{background:var(--gold);color:#fff;transform:rotate(90deg)}
+  .modal-grid{
+    display:grid;grid-template-columns:1fr 1fr;
+    min-height:420px
+  }
+  .modal-img{
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    padding:32px;
+    border-radius:20px 0 0 20px;
+    position:relative;
+    overflow:hidden
+  }
+  .modal-img img{max-width:100%;max-height:340px;object-fit:contain;transition:opacity .3s ease}
+  .modal-img img.fade{opacity:0}
+  .modal-info{padding:36px 32px}
+  .modal-tag{
+    font-size:9px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:6px
+  }
+  .modal-info h2{font-size:24px;font-weight:600;letter-spacing:-.25px;margin-bottom:4px}
+  .modal-info h2 small{font-size:15px;font-weight:400;color:var(--text-muted)}
+  .modal-desc{font-size:13px;color:var(--text-secondary);margin-bottom:20px;line-height:1.6}
+  .modal-specs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+  .modal-specs .ms{
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:8px;padding:10px 12px
+  }
+  .modal-specs .ms .ms-l{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:2px}
+  .modal-specs .ms .ms-v{font-size:13px;font-weight:600;color:var(--text)}
+  .modal-label{font-size:10px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;margin-top:8px}
+  .modal-colors{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));
+    gap:8px;margin-bottom:4px
+  }
+  .modal-colors .mc{
+    border:2px solid var(--border);border-radius:8px;
+    padding:6px;text-align:center;cursor:pointer;
+    transition:all .25s
+  }
+  .modal-colors .mc:hover,.modal-colors .mc.active{border-color:var(--gold)}
+  .modal-colors .mc.active{background:var(--gold-light)}
+  .modal-colors .mc img{max-width:100%;height:50px;object-fit:contain;margin-bottom:4px;transition:transform .2s}
+  .modal-colors .mc:hover img{transform:scale(1.08)}
+  .modal-colors .mc span{font-size:8px;font-weight:500;color:var(--text-secondary);display:block}
+
+  /* ─── Inner Tube Badge in Modal ─── */
+  .modal-tube-badge{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:11px;font-weight:500;color:var(--text-secondary);
+    background:var(--gold-light);border:1px solid rgba(196,151,74,.2);
+    border-radius:100px;padding:4px 12px;margin-bottom:16px
+  }
+  .modal-tube-badge strong{color:var(--gold);font-weight:600}
+
+  @media(max-width:700px){
+    .modal-grid{grid-template-columns:1fr}
+    .modal-img{border-radius:20px 20px 0 0;padding:24px}
+    .modal-specs{grid-template-columns:1fr}
+    .modal-info{padding:24px}
+  }
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <div class="inner">
+    <div class="logo" onclick="scrollToTop()">Streamline <em>Connections</em></div>
+    <div class="nav-links">
+      <a href="#ss" class="active">S/S Hose</a>
+      <a href="#pvc">PVC Hose</a>
+      <button class="inner-tube-btn" id="tubeBtn" onclick="toggleTubePanel()">
+        Inner Tube
+        <span class="badge" id="tubeBadge">PVC</span>
+      </button>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMobileNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ─── Inner Tube Panel ─── -->
+<div class="tube-panel" id="tubePanel">
+  <div class="inner">
+    <div class="tube-label">Select Inner Tube Material (Applies to all S/S Hoses)</div>
+    <div class="tube-grid" id="tubeGrid"></div>
+  </div>
+</div>
+
+<!-- ═══════════ COVER ═══════════ -->
+<section class="cover" id="top">
+  <div class="cover-lines">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+  <div class="cover-deco"></div>
+
+  <div class="cover-content">
+    <div class="cover-top">
+      <div class="year">2026 Product Catalog</div>
+      <div class="tag">Premium Hose Solutions</div>
+    </div>
+
+    <div class="cover-main">
+      <div class="pre-title">Streamline Connections</div>
+      <h1>Built to <span class="gold">Perform</span>.</h1>
+      <h2>Made to <span class="gold">Last</span>.</h2>
+      <p class="subtitle">Premium shower hoses engineered for excellence — flexible by design, reliable by performance. Every product crafted to the highest standards of quality.</p>
+      <div class="cover-cta">
+        <a href="#ss" class="primary">Explore Collection →</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover-footer">
+    <p>Stainless Steel · PVC · Custom Solutions</p>
+  </div>
+</section>
+
+<!-- ═══════════ SS HOSE ═══════════ -->
+<section id="ss">
+  <div class="inner">
+    <div class="section-header">
+      <div class="label">Series 01</div>
+      <h2>Stainless Steel Shower Hose</h2>
+      <p>Encrypted double-lock technology. Extensible, anti-twist, pull-out design. Premium finishes for every style.</p>
+    </div>
+    <div class="products">
+      <div class="card">
+        <div class="card-img"><img src="images/ss_H5.png" alt="H5"></div>
+        <div class="card-body">
+          <div class="card-tag">S/S Hose</div>
+          <h3>Model H5 <small>— Stainless Steel</small></h3>
+          <div class="card-desc">Encrypted double-lock. Extensible, anti-twist, pull-out design.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 / 15 mm</span></div>
+            <div class="row"><span class="label">Inner Tube</span><span class="value">PVC / EPDM</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Length</span><span class="value">Any size</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="images/ss_H6.png" alt="H6"></div>
+        <div class="card-body">
+          <div class="card-tag">S/S Hose</div>
+          <h3>Model H6 <small>— Stainless Steel</small></h3>
+          <div class="card-desc">Encrypted double-lock. Extensible, anti-twist, pull-out design.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 / 15 mm</span></div>
+            <div class="row"><span class="label">Inner Tube</span><span class="value">PVC / EPDM</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Length</span><span class="value">Any size</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="images/ss_H7.png" alt="H7"></div>
+        <div class="card-body">
+          <div class="card-tag">S/S Hose</div>
+          <h3>Model H7 <small>— Stainless Steel</small></h3>
+          <div class="card-desc">Encrypted double-lock. Extensible, anti-twist, pull-out design.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 / 15 mm</span></div>
+            <div class="row"><span class="label">Inner Tube</span><span class="value">PVC / EPDM</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Length</span><span class="value">Any size</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider-wrap">
+<div class="section-divider">
+  <span class="line"></span>
+  <span class="dot"></span>
+  <span class="line"></span>
+</div>
+</div>
+
+<!-- ═══════════ PVC HOSE ═══════════ -->
+<section id="pvc">
+  <div class="inner">
+    <div class="section-header">
+      <div class="label">Series 02</div>
+      <h2>PVC Shower Hose</h2>
+      <p>Durable anti-twist PVC hoses. 8 vibrant colors. Smooth, easy-clean surface.</p>
+    </div>
+    <div class="products">
+      <div class="card">
+        <div class="card-img"><img src="images/pvc_H10.png" alt="H10"></div>
+        <div class="card-body">
+          <div class="card-tag">PVC Hose</div>
+          <h3>H10 <small>— PVC</small></h3>
+          <div class="card-desc">Anti-twist. Durable, smooth, easy-clean.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 mm</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Colors</span><span class="value">8 options</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="images/pvc_H11.png" alt="H11"></div>
+        <div class="card-body">
+          <div class="card-tag">PVC Hose</div>
+          <h3>H11 <small>— PVC</small></h3>
+          <div class="card-desc">Anti-twist. Durable, smooth, easy-clean.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 mm</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Colors</span><span class="value">8 options</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="images/pvc_H18.png" alt="H18"></div>
+        <div class="card-body">
+          <div class="card-tag">PVC Hose</div>
+          <h3>H18 <small>— PVC</small></h3>
+          <div class="card-desc">Anti-twist. Durable, smooth, easy-clean.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 mm</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Colors</span><span class="value">8 options</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img"><img src="images/pvc_H19.png" alt="H19"></div>
+        <div class="card-body">
+          <div class="card-tag">PVC Hose</div>
+          <h3>H19 <small>— PVC</small></h3>
+          <div class="card-desc">Anti-twist. Durable, smooth, easy-clean.</div>
+          <div class="card-specs">
+            <div class="row"><span class="label">Diameter</span><span class="value">13 / 14 mm</span></div>
+            <div class="row"><span class="label">Ending Nuts</span><span class="value">Plastic · Zinc · S/S · Brass</span></div>
+            <div class="row"><span class="label">Colors</span><span class="value">8 options</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ MODAL ═══════════ -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-grid">
+      <div class="modal-img"><img id="modalImg" src="" alt="Product"></div>
+      <div class="modal-info">
+        <div class="modal-tag" id="modalTag"></div>
+        <h2 id="modalTitle"></h2>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-specs" id="modalSpecs"></div>
+        <div class="modal-label">Finishes</div>
+        <div class="modal-colors" id="modalColors"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<footer>
+  <div class="brand">Streamline <em>Connections</em></div>
+  <p>2026 Product Catalog — Premium Shower Hose Solutions</p>
+</footer>
+
+<script>
+const DATA = {
+  ss: {
+    series:'S/S Hose', tag:'S/S Hose', desc:'Encrypted double-lock. Extensible, anti-twist, pull-out design. Premium S/S braided finish.',
+    specs:[['Diameter','13 / 14 / 15 mm'],['Inner Tube','PVC / EPDM'],['Ending Nuts','Plastic · Zinc · S/S · Brass'],['Length','Any size']],
+    colorNames:['Polish','Chrome','Golden','Gun Grey','White','Black'],
+    materials:['PVC','EPDM','Cotton Braid EPDM','Nylon Braid EPDM','No Braid EPDM','S/S Braid EPDM','PET Braid EPDM'],
+    materialImages:['pvc','epdm','cotton_braid','nylon_braid','no_braid_epdm','s_s_braid_epdm','pet_braid_epdm'],
+    models:['H5','H6','H7'],
+    prefix:'ss'
+  },
+  pvc: {
+    series:'PVC Hose', tag:'PVC Hose', desc:'Anti-twist PVC hose. Durable, smooth, easy-clean surface.',
+    specs:[['Diameter','13 / 14 mm'],['Ending Nuts','Plastic · Zinc · S/S · Brass'],['Colors','8 options']],
+    colorNames:['Black','White','Golden','Green','Purple','Yellow','Red','Blue'],
+    models:['H10','H11','H18','H19'],
+    prefix:'pvc'
+  }
+};
+
+// ─── Global Inner Tube Selection ───
+let selectedMaterial = 'PVC';
+const ssData = DATA.ss;
+
+// Build tube panel
+function buildTubePanel() {
+  const grid = document.getElementById('tubeGrid');
+  grid.innerHTML = ssData.materials.map((name, i) => {
+    const imgFile = `ss_${ssData.models[0]}_mat_${ssData.materialImages[i]}.png`;
+    const isActive = name === selectedMaterial;
+    return `<div class="tube-opt ${isActive?'active':''}" onclick="selectTube(this,'${name}')">
+      <img src="images/${imgFile}" alt="${name}" onerror="this.style.display='none'">
+      <span>${name}</span>
+    </div>`;
+  }).join('');
+}
+
+function selectTube(el, name) {
+  document.querySelectorAll('.tube-opt').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  selectedMaterial = name;
+  document.getElementById('tubeBadge').textContent = name;
+  document.getElementById('tubeBadge').classList.add('show');
+  closeTubePanel();
+}
+
+function toggleTubePanel() {
+  const panel = document.getElementById('tubePanel');
+  const btn = document.getElementById('tubeBtn');
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open');
+  btn.classList.toggle('active', !isOpen);
+}
+
+function closeTubePanel() {
+  document.getElementById('tubePanel').classList.remove('open');
+  document.getElementById('tubeBtn').classList.remove('active');
+}
+
+// Init tube panel
+buildTubePanel();
+document.getElementById('tubeBadge').textContent = selectedMaterial;
+document.getElementById('tubeBadge').classList.add('show');
+
+// ─── Card Click ───
+document.querySelectorAll('.card').forEach(card => {
+  card.addEventListener('click', () => {
+    const series = card.closest('section').id;
+    const idx = Array.from(card.parentNode.children).indexOf(card);
+    openModal(series, idx);
+  });
+});
+
+function openModal(series, idx) {
+  const d = DATA[series];
+  const model = d.models[idx];
+
+  document.getElementById('modalTag').textContent = d.tag;
+  document.getElementById('modalTitle').innerHTML = `Model ${model} <small>— ${d.series}</small>`;
+  document.getElementById('modalDesc').textContent = d.desc;
+  document.getElementById('modalImg').src = `images/${d.prefix}_${model}.png`;
+
+  // Specs
+  document.getElementById('modalSpecs').innerHTML = d.specs.map(s =>
+    `<div class="ms"><div class="ms-l">${s[0]}</div><div class="ms-v">${s[1]}</div></div>`
+  ).join('');
+
+  // Colors — model-specific images
+  const colorsEl = document.getElementById('modalColors');
+  colorsEl.innerHTML = d.colorNames.map((name,i) => {
+    const colorKey = name.toLowerCase().replace(/\s+/g,'_');
+    const imgFile = `${d.prefix}_${model}_color_${colorKey}.png`;
+    return `<div class="mc ${i===0?'active':''}" onclick="selectColor(this,'${imgFile}')"><img src="images/${imgFile}" alt="${name}"><span>${name}</span></div>`;
+  }).join('');
+
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function selectColor(el, imgFile) {
+  document.querySelectorAll('.modal-colors .mc').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  // Crossfade effect
+  const img = document.getElementById('modalImg');
+  img.classList.add('fade');
+  setTimeout(() => {
+    img.src = `images/${imgFile}`;
+    img.classList.remove('fade');
+  }, 150);
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ─── Scroll Animations ───
+// Nav scroll effect
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('navbar');
+  nav.classList.toggle('scrolled', window.scrollY > 50);
+}, {passive:true});
+
+// Active nav link tracking
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+let navAnimFrame = null;
+function updateActiveNav() {
+  const scrollPos = window.scrollY + 150;
+  let current = 'ss';
+  sections.forEach(section => {
+    const top = section.offsetTop;
+    const bottom = top + section.offsetHeight;
+    if (scrollPos >= top && scrollPos < bottom) current = section.id;
+  });
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+  });
+  navAnimFrame = null;
+}
+window.addEventListener('scroll', () => {
+  if (!navAnimFrame) navAnimFrame = requestAnimationFrame(updateActiveNav);
+}, {passive:true});
+
+// Intersection Observer for card reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, {threshold:0.1, rootMargin:'0px 0px -40px 0px'});
+
+document.querySelectorAll('.card').forEach(card => observer.observe(card));
+
+// Stagger card animation
+document.querySelectorAll('.products').forEach(grid => {
+  const cards = grid.querySelectorAll('.card');
+  cards.forEach((card, i) => {
+    card.style.transitionDelay = `${i * 0.08}s`;
+  });
+});
+
+function scrollToTop() {
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Close tube panel on scroll or click outside
+window.addEventListener('scroll', () => {
+  if (document.getElementById('tubePanel').classList.contains('open')) {
+    closeTubePanel();
+  }
+}, {passive:true});
+
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('tubePanel');
+  const btn = document.getElementById('tubeBtn');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)) {
+    closeTubePanel();
+  }
+});
+
+// ─── Mobile Nav Toggle ───
+function toggleMobileNav() {
+  const links = document.querySelector('.nav-links');
+  const hamburger = document.getElementById('hamburger');
+  links.classList.toggle('open');
+  hamburger.classList.toggle('active');
+}
+
+// Close mobile nav on link click
+document.querySelectorAll('.nav-links a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.querySelector('.nav-links').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('active');
+  });
+});
+
+// Close mobile nav when tube panel is opened
+document.getElementById('tubeBtn').addEventListener('click', () => {
+  document.querySelector('.nav-links').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('active');
+});
+
+// Prevent double-tap zoom on interactive elements
+document.querySelectorAll('.card, button, a').forEach(el => {
+  el.style.touchAction = 'manipulation';
+});
+</script>
+</body>
+</html>
